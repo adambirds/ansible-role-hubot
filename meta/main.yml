@@ -1,0 +1,23 @@
+galaxy_info:
+  author: Richard Gibert
+  description: Hubot
+  license: GPLv3
+  min_ansible_version: 1.2
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - artful
+        - bionic
+        - trusty
+        - xenial
+  galaxy_tags:
+    - hubot
+
+dependencies:
+  - role: rgibert.user-setup
+    user_setup_group: "{{ hubot_group }}"
+    user_setup_username: "{{ hubot_user }}"
+    user_setup_home: "{{ hubot_home }}"

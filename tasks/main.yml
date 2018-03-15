@@ -1,0 +1,81 @@
+---
+- block:
+
+  - name: install dependencies
+    package:
+      name: "{{ item }}"
+      state: installed
+    with_items: "{{ hubot_dep_pkgs }}"
+    notify: restart hubot
+    tags:
+      - hubot_pkg_install_deps
+
+  - name: install npm packages
+    npm:
+      name: "{{ item }}"
+      global: yes
+      state: present
+    with_items: "{{ hubot_hubot_pkgs }}"
+    notify: restart hubot
+    tags:
+      - hubot_npm_install_deps
+
+  - name: create required directories
+    file:
+      state: directory
+      path: "{{ item }}"
+      owner: "{{ hubot_user }}"
+      group: "{{ hubot_group }}"
+      mode: "0750"
+    with_items:
+      - "{{ hubot_home }}"
+      - "{{ hubot_home }}/bin"
+      - "{{ hubot_home }}/scripts"
+      - "{{ hubot_home }}/logs"
+      - "{{ hubot_home }}/var"
+    notify: restart hubot
+    tags:
+      - hubot_create_dirs
+
+  - name: install hubot template files
+    template:
+      src: "templates/hubot/{{ item.f }}.j2"
+      dest: "{{ hubot_home }}/{{ item.f }}"
+      owner: "{{ hubot_user }}"
+      group: "{{ hubot_group }}"
+      mode: "{{ item.m }}"
+    with_items:
+      - f: bin/hubot
+        m: "0750"
+      - f: external-scripts.json
+        m: "0640"
+      - f: package.json
+        m: "0640"
+    notify: restart hubot
+    tags:
+      - hubot_install_template_files
+
+  - name: install systemd service file
+    template:
+      src: "templates/etc/systemd/system/hubot.service.j2"
+      dest: "/etc/systemd/system/hubot.service"
+      owner: root
+      group: root
+      mode: "0644"
+    notify: restart hubot
+    tags:
+      - hubot_install_systemd_service_file
+
+  - name: start/enable hubot service
+    service:
+      name: hubot
+      state: started
+      enabled: yes
+    when:
+      - hubot_dockerize == false
+    tags:
+      - hubot_start_service
+      - hubot_enable_service
+
+  tags:
+    - hubot

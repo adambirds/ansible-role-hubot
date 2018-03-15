@@ -1,0 +1,14 @@
+[Unit]
+Description=Hubot
+After=network.target
+
+[Service]
+Type=simple
+User={{ hubot_user }}
+Group={{ hubot_group }}
+ExecStart={{ hubot_home }}/bin/hubot start
+ExecReload={{ hubot_home }}/bin/hubot reload
+ExecStop={{ hubot_home }}/bin/hubot stop
+
+[Install]
+WantedBy=multi-user.target

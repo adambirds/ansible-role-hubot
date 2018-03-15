@@ -1,0 +1,4 @@
+---
+hubot_dep_pkgs:
+  - nodejs
+  - npm
