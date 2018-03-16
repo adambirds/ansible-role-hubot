@@ -23,6 +23,7 @@ Role Variables
 | hubot_user | botuser | User to run Hubot as |
 | hubot_group | botgroup | Default group for the Hubot user |
 | hubot_hubot_pkgs | [] | Additional packages to be used by Hubot |
+| hubot_hubot_scripts | [] | Cusom script files to copy |
 
 Dependencies
 ------------

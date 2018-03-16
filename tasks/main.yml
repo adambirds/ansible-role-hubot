@@ -55,6 +55,18 @@
     tags:
       - hubot_install_template_files
 
+  - name: copy custom scripts
+    template:
+      src: "templates/hubot/scipts/{{ item }}.j2"
+      dest: "{{ hubot_home }}/scripts/{{ item }}"
+      owner: "{{ hubot_user }}"
+      group: "{{ hubot_group }}"
+      mode: "0644"
+    with_items: "{{ hubot_custom_scripts }}"
+    notify: restart hubot
+    tags:
+      - hubot_install_custom_scripts
+
   - name: install systemd service file
     template:
       src: "templates/etc/systemd/system/hubot.service.j2"

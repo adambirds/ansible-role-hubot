@@ -1,4 +1,5 @@
 ---
+hubot_dockerize: false
 hubot_adapter: slack
 hubot_admin: User <user@domain.com>
 hubot_home: /var/lib/hubot
@@ -8,3 +9,4 @@ hubot_description: Hubot
 hubot_user: botuser
 hubot_group: botgroup
 hubot_hubot_pkgs: []
+hubot_custom_scripts: []

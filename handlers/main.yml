@@ -3,3 +3,5 @@
   service:
     name: hubot
     state: restarted
+  when:
+    hubot_dockerize == false
