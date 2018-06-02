@@ -17,7 +17,7 @@ galaxy_info:
     - hubot
 
 dependencies:
-  - role: ansible-role-user-setup
+  - role: adambirds.user-setup
     user_setup_group: "{{ hubot_group }}"
     user_setup_username: "{{ hubot_user }}"
     user_setup_home: "{{ hubot_home }}"
