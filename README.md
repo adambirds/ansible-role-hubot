@@ -28,7 +28,7 @@ Role Variables
 Dependencies
 ------------
 
-- rgibert.user-setup
+- ansible-role-user-setup
 
 Example Playbook
 ----------------
@@ -36,7 +36,7 @@ Example Playbook
 ```
 - hosts: servers
   roles:
-    - role: rgibert.hubot
+    - role: ansible-role-hubot
       hubot_slack_token: token12345
 ```
 
@@ -48,5 +48,4 @@ GPLv3
 Author Information
 ------------------
 
-Richard Gibert
-<richard@gibert.ca>
+Adam Birds
