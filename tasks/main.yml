@@ -33,10 +33,12 @@
       chdir: "{{ hubot_home }}"
       create: "{{ hubot_name }}-{{ hubot_version }}.log"
 
-  - name: Create user and groups
+  - name: Create group
     group:
       name: "{{ hubot_group }}"
       state: present
+
+  - name: Create user
     user:
       name: "{{ hubot_user }}"
       state: present
