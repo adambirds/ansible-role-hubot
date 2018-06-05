@@ -11,6 +11,6 @@ Group={{ hubot_group }}
 Restart=always
 RestartSec=10
 
-EnvironmentFile="{{ hubot_home }}hubot-env-variables"
+Environment="HUBOT_SLACK_TOKEN={{ hubot_slack_token }}"
 
 ExecStart={{ hubot_home }}bin/hubot --adapter {{ hubot_adapter }}

@@ -6,9 +6,17 @@
       name: "{{ item }}"
       state: installed
     with_items: "{{ hubot_dep_pkgs }}"
-    notify: restart hubot
     tags:
       - hubot_pkg_install_deps
+
+  - name: install generator-hubot
+    npm:
+      name: "{{ item }}"
+      global: yes
+      state: present
+    with_items: "{{ hubot_dep_npm_pkgs }}"
+    tags:
+      - hubot_npm_install_generator_hubot
 
   - name: install npm packages
     npm:
@@ -16,56 +24,57 @@
       global: yes
       state: present
     with_items: "{{ hubot_hubot_pkgs }}"
-    notify: restart hubot
     tags:
       - hubot_npm_install_deps
 
-  - name: create required directories
+  - name: Install Hubot
+    shell: yo hubot --name={{ hubot_name }} --description={{ hubot_description }} --adapter={{ hubot_adapter }} --owner={{ hubot_admin }}
+    args:
+      chdir: "{{ hubot_home }}"
+      create: "{{ hubot_name }}-{{ hubot_version }}.log"
+
+  - name: Create user and groups
+    group:
+      name: "{{ hubot_group }}"
+      state: present
+    user:
+      name: "{{ hubot_user }}"
+      state: present
+      shell: '/bin/bash'
+    tags:
+      - hubot_create_users_groups
+
+  - name: Set file permissions
     file:
-      state: directory
-      path: "{{ item }}"
+      path: "{{ hubot_home }}"
+      recurse: yes
       owner: "{{ hubot_user }}"
       group: "{{ hubot_group }}"
-      mode: "0750"
-    with_items:
-      - "{{ hubot_home }}"
-      - "{{ hubot_home }}/bin"
-      - "{{ hubot_home }}/scripts"
-      - "{{ hubot_home }}/logs"
-      - "{{ hubot_home }}/var"
-    notify: restart hubot
-    tags:
-      - hubot_create_dirs
+      state: directory     
 
-  - name: install hubot template files
+  - name: install systemd service file
     template:
-      src: "templates/hubot/{{ item.f }}.j2"
-      dest: "{{ hubot_home }}/{{ item.f }}"
-      owner: "{{ hubot_user }}"
-      group: "{{ hubot_group }}"
-      mode: "{{ item.m }}"
-    with_items:
-      - f: bin/hubot
-        m: "0750"
-      - f: external-scripts.json
-        m: "0640"
-      - f: package.json
-        m: "0640"
-    notify: restart hubot
-    tags:
-      - hubot_install_template_files
-
-  - name: copy custom scripts
-    template:
-      src: "templates/hubot/scipts/{{ item }}.j2"
-      dest: "{{ hubot_home }}/scripts/{{ item }}"
-      owner: "{{ hubot_user }}"
-      group: "{{ hubot_group }}"
+      src: "templates/etc/systemd/system/hubot-slack.service.j2"
+      dest: "/etc/systemd/system/hubot.service"
+      owner: root
+      group: root
       mode: "0644"
-    with_items: "{{ hubot_custom_scripts }}"
     notify: restart hubot
+    when: "{{ hubot_adapter }}"" == "slack"
     tags:
-      - hubot_install_custom_scripts
+      - hubot_install_systemd_service_file
+
+  - name: install environment file
+    template:
+      src: "templates/etc/hubot/hubot-env-variables.j2"
+      dest: "{{ hubot_home }}hubot-env-variables"
+      owner: root
+      group: root
+      mode: "0644"
+    notify: restart hubot
+    when: not ("{{ hubot_adapter }}"" == "slack")
+    tags:
+      - hubot_install_environment_file
 
   - name: install systemd service file
     template:
@@ -75,16 +84,15 @@
       group: root
       mode: "0644"
     notify: restart hubot
+    when: not ("{{ hubot_adapter }}"" == "slack")
     tags:
       - hubot_install_systemd_service_file
 
   - name: start/enable hubot service
-    service:
+    systemd:
       name: hubot
       state: started
       enabled: yes
-    when:
-      - hubot_dockerize == false
     tags:
       - hubot_start_service
       - hubot_enable_service

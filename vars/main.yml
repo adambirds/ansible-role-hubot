@@ -2,3 +2,7 @@
 hubot_dep_pkgs:
   - nodejs
   - npm
+
+hubot_dep_npm_pkgs:
+  - yo
+  - generator-hubot

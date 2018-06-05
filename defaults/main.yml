@@ -1,12 +1,12 @@
 ---
-hubot_dockerize: false
 hubot_adapter: slack
+hubot_slack_token: xoxb-YOUR-TOKEN-HERE
 hubot_admin: User <user@domain.com>
-hubot_home: /var/lib/hubot
+hubot_home: /var/lib/hubot/
 hubot_name: bot
 hubot_version: 1.0.0
 hubot_description: Hubot
 hubot_user: botuser
 hubot_group: botgroup
 hubot_hubot_pkgs: []
-hubot_custom_scripts: []
+hubot_adapter_environment_variables: | 
