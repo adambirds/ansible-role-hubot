@@ -60,7 +60,7 @@
       group: root
       mode: "0644"
     notify: restart hubot
-    when: "{{ hubot_adapter }}"" == "slack"
+    when: "{{ hubot_adapter }}" == "slack"
     tags:
       - hubot_install_systemd_service_file
 
@@ -72,7 +72,7 @@
       group: root
       mode: "0644"
     notify: restart hubot
-    when: not ("{{ hubot_adapter }}"" == "slack")
+    when: not ("{{ hubot_adapter }}" == "slack")
     tags:
       - hubot_install_environment_file
 
@@ -84,7 +84,7 @@
       group: root
       mode: "0644"
     notify: restart hubot
-    when: not ("{{ hubot_adapter }}"" == "slack")
+    when: not ("{{ hubot_adapter }}" == "slack")
     tags:
       - hubot_install_systemd_service_file
 
