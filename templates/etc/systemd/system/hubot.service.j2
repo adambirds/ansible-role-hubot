@@ -6,6 +6,7 @@ After=network.target
 Type=simple
 User={{ hubot_user }}
 Group={{ hubot_group }}
+WorkingDirectory={{ hubot_home }}
 ExecStart={{ hubot_home }}/bin/hubot start
 ExecReload={{ hubot_home }}/bin/hubot reload
 ExecStop={{ hubot_home }}/bin/hubot stop
