@@ -28,10 +28,10 @@
       - hubot_npm_install_deps
 
   - name: Install Hubot
-    shell: yo hubot --name="{{ hubot_name }}" --description="{{ hubot_description }}" --adapter="{{ hubot_adapter }}" --owner="{{ hubot_admin }}"
+    command: yo hubot --name="{{ hubot_name }}" --description="{{ hubot_description }}" --adapter="{{ hubot_adapter }}" --owner="{{ hubot_admin }}"
     args:
       chdir: "{{ hubot_home }}"
-      create: "{{ hubot_name }}-{{ hubot_version }}.log"
+      creates: "{{ hubot_name }}-{{ hubot_version }}.log"
 
   - name: Create group
     group:
