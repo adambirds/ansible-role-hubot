@@ -28,7 +28,7 @@
       - hubot_npm_install_deps
 
   - name: Install Hubot
-    command: yo hubot --name="{{ hubot_name }}" --description="{{ hubot_description }}" --adapter="{{ hubot_adapter }}" --owner="{{ hubot_admin }}"
+    command: 'yo hubot --name="{{ hubot_name }}" --description="{{ hubot_description }}" --adapter="{{ hubot_adapter }}" --owner="{{ hubot_admin }}"'
     args:
       chdir: "{{ hubot_home }}"
       creates: "{{ hubot_name }}-{{ hubot_version }}.log"
